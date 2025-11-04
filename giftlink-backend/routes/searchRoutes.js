@@ -1,41 +1,32 @@
 const express = require('express');
 const router = express.Router();
-const connectToDatabase = require('../models/db');
+const Gift = require('../models/Gift'); // Mongoose model for gifts
 
-// Search for gifts
-router.get('/', async (req, res, next) => {
+// GET /api/search?name=&category=&condition=&age_years=
+router.get('/', async (req, res) => {
     try {
-        // Task 1: Connect to MongoDB using connectToDatabase database. Remember to use the await keyword and store the connection in `db`
-        // {{insert code here}}
+        const { name, category, condition, age_years } = req.query;
+        const filter = {};
 
-        const collection = db.collection("gifts");
-
-        // Initialize the query object
-        let query = {};
-
-        // Add the name filter to the query if the name parameter is not empty
-        // if (/* {{insert code here}} */) {
-            query.name = { $regex: req.query.name, $options: "i" }; // Using regex for partial match, case-insensitive
-        // }
-
-        // Task 3: Add other filters to the query
-        if (req.query.category) {
-            // {{insert code here}}
+        if (name && name.trim() !== '') {
+            filter.name = { $regex: name.trim(), $options: 'i' }; // Case-insensitive
         }
-        if (req.query.condition) {
-            // {{insert code here}} 
+        if (category && category.trim() !== '') {
+            filter.category = category.trim();
         }
-        if (req.query.age_years) {
-            // {{insert code here}}
-            query.age_years = { $lte: parseInt(req.query.age_years) };
+        if (condition && condition.trim() !== '') {
+            filter.condition = condition.trim();
+        }
+        if (age_years && !isNaN(age_years)) {
+            filter.age_years = { $lte: parseFloat(age_years) };
         }
 
-        // Task 4: Fetch filtered gifts using the find(query) method. Make sure to use await and store the result in the `gifts` constant
-        // {{insert code here here}}
+        const gifts = await Gift.find(filter); // Mongoose handles connection and query
 
         res.json(gifts);
-    } catch (e) {
-        next(e);
+    } catch (err) {
+        console.error('Error fetching filtered gifts:', err);
+        res.status(500).send('Error fetching gifts');
     }
 });
 
