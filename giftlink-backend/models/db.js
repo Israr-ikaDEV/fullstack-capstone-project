@@ -1,21 +1,28 @@
-require('dotenv').config({ path: '../.env' }); // adjust path if needed
-const mongoose = require('mongoose');
+// db.js
+require('dotenv').config();
+const MongoClient = require('mongodb').MongoClient;
 
-const connectDB = async () => {
-  try {
-    const mongoURI = process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/giftdb';
-    console.log('Connecting to MongoDB at:', mongoURI);
+// MongoDB connection URL with authentication options
+let url = `${process.env.MONGO_URL}`;
 
-    // Mongoose 7+ ignores useNewUrlParser/useUnifiedTopology
-    await mongoose.connect(mongoURI, {
-      serverSelectionTimeoutMS: 10000, // 10 seconds timeout
-    });
+let dbInstance = null;
+const dbName = "giftdb";
 
-    console.log('✅ MongoDB connected successfully');
-  } catch (err) {
-    console.error('❌ Error connecting to MongoDB:', err.message);
-    process.exit(1); // stop the server if DB connection fails
-  }
-};
+async function connectToDatabase() {
+    if (dbInstance){
+        return dbInstance
+    };
 
-module.exports = connectDB;
+    const client = new MongoClient(url);      
+
+    // Task 1: Connect to MongoDB
+    await client.connect();
+
+    // Task 2: Connect to database giftDB and store in variable dbInstance
+    dbInstance = client.db(dbName);
+
+    // Task 3: Return database instance
+    return dbInstance;
+}
+
+module.exports = connectToDatabase;

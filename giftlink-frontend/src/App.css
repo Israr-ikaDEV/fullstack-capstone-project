@@ -140,6 +140,7 @@ body,
 .navbar {
   background-color: #f8f9fa; /* A light color for contrast with the text */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* A subtle shadow for depth */
+  padding: 20px;
 }
 
 /* Add a hover effect to nav links */

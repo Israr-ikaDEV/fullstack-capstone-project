@@ -1,0 +1,82 @@
+.landing-page {
+  font-family: 'Montserrat', sans-serif;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f4f4;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background blur using pseudo-element */
+.landing-page::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../../../public/static/background-colors.jpg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px) brightness(0.85);
+  z-index: 0;
+}
+
+/* Content area */
+.content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #111827;
+  max-width: 900px;
+  padding: 3rem;
+  background: rgba(255,255,255,0.85);
+  border-radius: 12px;
+  box-shadow: 0 6px 30px rgba(16,24,40,0.12);
+}
+
+/* Headings & text */
+h1.display-4 {
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 700;
+  color: #0f172a;
+}
+
+h2 {
+  font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+  font-weight: 600;
+  color: #0b1220;
+}
+
+.lead {
+  font-size: 1.05rem;
+  color: #374151;
+  margin-bottom: 1.25rem;
+}
+
+/* Button styling */
+.btn-primary {
+  background-color: #1f7a8c;
+  border-color: #1f7a8c;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(31,122,140,0.2);
+}
+
+/* Fade animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.content {
+  animation: fadeIn 1.2s ease forwards;
+}
